@@ -1,0 +1,13 @@
+{
+  "repo": "dimensions",
+  "feeds": [
+    {
+      "source": "https://www.dimensions.ai/blog/",
+      "feed_url": "https://www.dimensions.ai/feed/",
+      "saved": 10,
+      "title": "Dimensions"
+    }
+  ],
+  "post_count": 10,
+  "fetched": "2026-05-03T23:27:07Z"
+}
