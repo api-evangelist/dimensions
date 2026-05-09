@@ -3,11 +3,11 @@
   "feeds": [
     {
       "source": "https://www.dimensions.ai/blog/",
-      "feed_url": "https://www.dimensions.ai/feed/",
-      "saved": 10,
-      "title": "Dimensions"
+      "feed_url": "https://www.dimensions.ai/blog/feed/",
+      "title": "Blog \u2013 Dimensions",
+      "saved": 0
     }
   ],
   "post_count": 10,
-  "fetched": "2026-05-03T23:27:07Z"
+  "fetched": "2026-05-09T20:17:51Z"
 }
