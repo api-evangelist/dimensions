@@ -2,7 +2,7 @@
 
 Dimensions is a research data platform from Digital Science providing access to publications, grants, patents, clinical trials, datasets, and policy documents. The Dimensions Analytics API offers programmatic access to this research data via the Dimensions Search Language (DSL), enabling citation analysis, researcher discovery, organization benchmarking, and topic identification. The API is subscription-only and is not intended for bulk data extraction or to power dashboards or other derivative products.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/dimensions/refs/heads/main/apis.yml)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/dimensions/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/dimensions/refs/heads/main/apis.yml)
 
 ## Scope
 
@@ -10,9 +10,15 @@ Dimensions is a research data platform from Digital Science providing access to 
 - **Position:** Consumer
 - **Access:** 3rd-Party
 
-## Tags:
+## Tags
 
- - Analytics, Research, Publications, Grants, Patents, Clinical Trials, Jupyter Notebooks
+- Analytics
+- Research
+- Publications
+- Grants
+- Patents
+- Clinical Trials
+- Jupyter Notebooks
 
 ## Timestamps
 
@@ -25,21 +31,27 @@ Dimensions is a research data platform from Digital Science providing access to 
 
 The Dimensions Analytics API provides programmatic access to the Dimensions research data platform via the Dimensions Search Language (DSL). It supports queries against publications, grants, patents, clinical trials, datasets, organizations, and researchers. Authentication uses an API key exchanged for a JWT token via POST to /api/auth, with query requests sent to /api/dsl/v2 carrying the JWT in the Authorization header. The API is subscription-only and rate limited to 30 requests per IP per minute.
 
-**Human URL:** [https://docs.dimensions.ai/dsl/](https://docs.dimensions.ai/dsl/)
+- **Human URL:** [https://docs.dimensions.ai/dsl/](https://docs.dimensions.ai/dsl/)
+- **Base URL:** `https://app.dimensions.ai/api`
 
-**Base URL:** https://app.dimensions.ai/api
+#### Tags
 
-#### Tags:
-
- - Analytics, Research, Publications, Grants, Patents, Clinical Trials
+- Analytics
+- Research
+- Publications
+- Grants
+- Patents
+- Clinical Trials
 
 #### Properties
 
 - [Documentation](https://docs.dimensions.ai/dsl/)
-- [API Access](https://docs.dimensions.ai/dsl/api.html)
-- [DSL Reference](https://docs.dimensions.ai/dsl/language.html)
-- [API Lab](https://api-lab.dimensions.ai/)
-- [SourceCode](https://github.com/digital-science/dimcli)
+- [A P I  Access](https://docs.dimensions.ai/dsl/api.html)
+- [D S L  Reference](https://docs.dimensions.ai/dsl/language.html)
+- [A P I  Lab](https://api-lab.dimensions.ai/)
+- [Source Code](https://github.com/digital-science/dimcli)
+- [Postman Collection](collections/dimensions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/dimensions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
@@ -51,5 +63,4 @@ The Dimensions Analytics API provides programmatic access to the Dimensions rese
 ## Maintainers
 
 **FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
