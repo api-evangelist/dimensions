@@ -10,7 +10,7 @@ description: >-
   analysis, researcher discovery, organization benchmarking, and topic
   identification. The API is subscription-only and is not intended for bulk
   data extraction or to power dashboards or other derivative products.
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -37,7 +37,7 @@ apis:
       query requests sent to /api/dsl/v2 carrying the JWT in the Authorization
       header. The API is subscription-only and rate limited to 30 requests per
       IP per minute.
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.dimensions.ai/dsl/
     baseURL: https://app.dimensions.ai/api
     tags:
