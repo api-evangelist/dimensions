@@ -59,6 +59,10 @@ apis:
       - type: SourceCode
         url: https://github.com/digital-science/dimcli
 common:
+  - type: DomainSecurity
+    url: security/dimensions-domain-security.yml
+  - type: Authentication
+    url: authentication/dimensions-authentication.yml
   - type: Website
     url: https://www.dimensions.ai/
   - type: Documentation
