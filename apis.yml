@@ -59,6 +59,8 @@ apis:
       - type: SourceCode
         url: https://github.com/digital-science/dimcli
 common:
+  - type: AgenticAccess
+    url: agentic-access/dimensions-agentic-access.yml
   - type: DomainSecurity
     url: security/dimensions-domain-security.yml
   - type: Authentication
