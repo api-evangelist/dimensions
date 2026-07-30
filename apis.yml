@@ -10,7 +10,20 @@ description: >-
   analysis, researcher discovery, organization benchmarking, and topic
   identification. The API is subscription-only and is not intended for bulk
   data extraction or to power dashboards or other derivative products.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/dimensions.png
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -26,38 +39,56 @@ created: '2025-02-06'
 modified: '2026-04-28'
 specificationVersion: '0.19'
 apis:
-  - aid: dimensions:dimensions-analytics-api
-    name: Dimensions Analytics API
-    description: >-
-      The Dimensions Analytics API provides programmatic access to the
-      Dimensions research data platform via the Dimensions Search Language
-      (DSL). It supports queries against publications, grants, patents,
-      clinical trials, datasets, organizations, and researchers. Authentication
-      uses an API key exchanged for a JWT token via POST to /api/auth, with
-      query requests sent to /api/dsl/v2 carrying the JWT in the Authorization
-      header. The API is subscription-only and rate limited to 30 requests per
-      IP per minute.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.dimensions.ai/dsl/
-    baseURL: https://app.dimensions.ai/api
-    tags:
-      - Analytics
-      - Research
-      - Publications
-      - Grants
-      - Patents
-      - Clinical Trials
-    properties:
-      - type: Documentation
-        url: https://docs.dimensions.ai/dsl/
-      - type: API Access
-        url: https://docs.dimensions.ai/dsl/api.html
-      - type: DSL Reference
-        url: https://docs.dimensions.ai/dsl/language.html
-      - type: API Lab
-        url: https://api-lab.dimensions.ai/
-      - type: SourceCode
-        url: https://github.com/digital-science/dimcli
+- aid: dimensions:dimensions-analytics-api
+  name: Dimensions Analytics API
+  description: >-
+    The Dimensions Analytics API provides programmatic access to the Dimensions research data platform
+    via the Dimensions Search Language (DSL). It supports queries against publications, grants, patents,
+    clinical trials, datasets, organizations, and researchers. Authentication uses an API key exchanged
+    for a JWT token via POST to /api/auth, with query requests sent to /api/dsl/v2 carrying the JWT in
+    the Authorization header. The API is subscription-only and rate limited to 30 requests per IP per
+    minute.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.dimensions.ai/dsl/
+  baseURL: https://app.dimensions.ai/api
+  tags:
+  - Analytics
+  - Research
+  - Publications
+  - Grants
+  - Patents
+  - Clinical Trials
+  properties:
+  - type: Documentation
+    url: https://docs.dimensions.ai/dsl/
+  - type: API Access
+    url: https://docs.dimensions.ai/dsl/api.html
+  - type: DSL Reference
+    url: https://docs.dimensions.ai/dsl/language.html
+  - type: API Lab
+    url: https://api-lab.dimensions.ai/
+  - type: SourceCode
+    url: https://github.com/digital-science/dimcli
+- aid: dimensions:dimensions-authentication-api
+  name: Dimensions Authentication API
+  description: The Authentication API from Dimensions — 1 operation(s) for authentication.
+  humanURL: https://docs.dimensions.ai/dsl/
+  baseURL: https://app.dimensions.ai/api
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/dimensions-authentication-api-openapi.yml
+- aid: dimensions:dimensions-query-api
+  name: Dimensions Query API
+  description: The Query API from Dimensions — 1 operation(s) for query.
+  humanURL: https://docs.dimensions.ai/dsl/
+  baseURL: https://app.dimensions.ai/api
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/dimensions-query-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/dimensions-agentic-access.yml
