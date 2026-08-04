@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: Dimensions Analytics API
+  description: >-
+    The Dimensions Analytics API provides programmatic access to research data
+    (publications, grants, patents, clinical trials, datasets, policy
+    documents) using the Dimensions Search Language (DSL). Authentication is
+    via a JWT token obtained from POST /api/auth, and queries are issued
+    against POST /api/dsl.
+  version: "2.0"
+servers:
+  - url: https://app.dimensions.ai/api
+    description: Dimensions Analytics API
+security:
+  - jwt: []
+tags:
+  - name: Authentication
+  - name: Query
+paths:
+  /auth:
+    post:
+      tags: [Authentication]
+      summary: Obtain a JWT query token
+      operationId: authenticate
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [key]
+              properties:
+                key:
+                  type: string
+                  description: Dimensions API key
+      responses:
+        '200':
+          description: Returns a JWT token valid ~2 hours
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /dsl/v2:
+    post:
+      tags: [Query]
+      summary: Execute a DSL query
+      operationId: dslQuery
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: A DSL query string, e.g. `search publications return publications`
+      responses:
+        '200':
+          description: Query results
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    jwt:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Pass `JWT {token}` returned by /auth

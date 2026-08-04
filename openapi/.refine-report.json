@@ -1,0 +1,16 @@
+{
+  "provider": "dimensions",
+  "sources": [
+    "dimensions-authentication-api-openapi.yml",
+    "dimensions-query-api-openapi.yml"
+  ],
+  "outputs": [
+    "dimensions-authentication-api-openapi.yml",
+    "dimensions-query-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
