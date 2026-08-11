@@ -90,6 +90,13 @@ apis:
   - type: OpenAPI
     url: openapi/dimensions-query-api-openapi.yml
 common:
+  - type: IssueTracker
+    url: https://github.com/digital-science/dimcli/issues
+  - type: Releases
+    url: https://github.com/digital-science/dimcli/releases
+  - type: License
+    name: MIT
+    url: https://github.com/digital-science/dimcli/blob/master/LICENSE
   - type: AgenticAccess
     url: agentic-access/dimensions-agentic-access.yml
   - type: DomainSecurity
