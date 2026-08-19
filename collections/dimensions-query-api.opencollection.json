@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dimensions Analytics Authentication Query API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute a DSL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.dimensions.ai/api/dsl/v2"
+          },
+          "docs": "Execute a DSL query"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
