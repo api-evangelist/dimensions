@@ -1,0 +1,222 @@
+generated: '2026-09-06'
+method: derived
+source: mcp/dimensions-mcp.yml + openapi/dimensions-query-api-openapi.yml + openapi/dimensions-authentication-api-openapi.yml
+  + https://docs.dimensions.ai/dsl/language.html
+provider: Dimensions
+providerId: dimensions
+description: 'Binds every Dimensions Analytics MCP tool to the REST operation that backs it. The Dimensions
+  REST surface is deliberately tiny — one auth exchange and one query endpoint — because the real API
+  surface is the Dimensions Search Language carried in the /dsl/v2 request body. Every data tool therefore
+  resolves to the SAME operationId (dslQuery) and differs only in the DSL it composes, which is why operationId
+  mapping alone understates the MCP server: the tools are the first machine-readable projection of the
+  DSL that Dimensions has published.'
+surfaces:
+  openapi:
+  - openapi/dimensions-query-api-openapi.yml
+  - openapi/dimensions-authentication-api-openapi.yml
+  rest_base: https://app.dimensions.ai/api
+  graphql: null
+  mcp:
+    local_stdio: npx -y @digital-science-dsl/dimensions-analytics-mcp
+    remote: https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server
+    gated: true
+    note: The local server needs a subscriber API key and the remote endpoint needs OAuth, so no live
+      tools/list was readable. Tool names and descriptions are verbatim from the provider docs; input
+      schemas were not asserted.
+crosswalk:
+- tool: search_publications
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search publications ... return publications` statement and POSTs it as the
+    text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_grants
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search grants ... return grants` statement and POSTs it as the text/plain body
+    of /dsl/v2.
+  confidence: high
+- tool: search_researchers
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search researchers ... return researchers` statement and POSTs it as the text/plain
+    body of /dsl/v2.
+  confidence: high
+- tool: search_patents
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search patents ... return patents` statement and POSTs it as the text/plain
+    body of /dsl/v2.
+  confidence: high
+- tool: search_clinical_trials
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search clinical_trials ... return clinical_trials` statement and POSTs it as
+    the text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_datasets
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search datasets ... return datasets` statement and POSTs it as the text/plain
+    body of /dsl/v2.
+  confidence: high
+- tool: search_policy_documents
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search policy_documents ... return policy_documents` statement and POSTs it
+    as the text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_organizations
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search organizations ... return organizations` statement and POSTs it as the
+    text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_reports
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search reports ... return reports` statement and POSTs it as the text/plain
+    body of /dsl/v2.
+  confidence: high
+- tool: search_source_titles
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search source_titles ... return source_titles` statement and POSTs it as the
+    text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_funder_groups
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search funder_groups ... return funder_groups` statement and POSTs it as the
+    text/plain body of /dsl/v2.
+  confidence: high
+- tool: search_research_org_groups
+  category: search
+  rest:
+  - dslQuery
+  binding: Composes a DSL `search research_org_groups ... return research_org_groups` statement and POSTs
+    it as the text/plain body of /dsl/v2.
+  confidence: high
+- tool: fetch_search_pages
+  category: search
+  rest:
+  - dslQuery
+  binding: Issues repeated /dsl/v2 calls with incrementing `skip`, then pages, aggregates, or streams
+    the rows to a file. Local stdio only — the paging loop and file write happen in the server, not the
+    API.
+  confidence: high
+- tool: get_by_doi
+  category: lookup
+  rest:
+  - dslQuery
+  binding: DSL `search publications where doi = "..."` against /dsl/v2.
+  confidence: high
+- tool: get_by_pmid
+  category: lookup
+  rest:
+  - dslQuery
+  binding: DSL `search publications where pmid = "..."` against /dsl/v2.
+  confidence: high
+- tool: get_by_id
+  category: lookup
+  rest:
+  - dslQuery
+  binding: DSL `search <source> where id = "..."` against /dsl/v2, source chosen from the Dimensions ID
+    prefix.
+  confidence: high
+- tool: aggregate_query
+  category: analytics
+  rest:
+  - dslQuery
+  binding: DSL `return <facet> aggregate <metric>` against /dsl/v2.
+  confidence: high
+- tool: facet_query
+  category: analytics
+  rest:
+  - dslQuery
+  binding: DSL `return <field>` facet projection against /dsl/v2.
+  confidence: high
+- tool: citation_trend
+  category: analytics
+  rest:
+  - dslQuery
+  binding: DSL year-bucketed aggregation over publications against /dsl/v2.
+  confidence: medium
+  note: The exact DSL the tool emits is not published; the binding is inferred from the documented tool
+    behaviour and the DSL functions reference.
+- tool: funding_trend
+  category: analytics
+  rest:
+  - dslQuery
+  binding: DSL year-bucketed funding aggregation over grants against /dsl/v2.
+  confidence: medium
+  note: Same caveat as citation_trend.
+- tool: extract_affiliations
+  category: entity-resolution
+  rest:
+  - dslQuery
+  binding: DSL `extract_affiliations()` function call against /dsl/v2.
+  confidence: high
+- tool: extract_grants
+  category: entity-resolution
+  rest:
+  - dslQuery
+  binding: DSL `extract_grants()` function call against /dsl/v2.
+  confidence: high
+- tool: similar_documents
+  category: discovery
+  rest:
+  - dslQuery
+  binding: DSL `similar_documents()` function call against /dsl/v2 (documented in the 2.15 release notes,
+    which added its `limit` argument).
+  confidence: high
+- tool: execute_dsl
+  category: raw
+  rest:
+  - dslQuery
+  binding: Passes the caller's raw DSL string straight through to /dsl/v2. This is the one tool that is
+    a 1:1 wrapper of the REST operation.
+  confidence: high
+- tool: describe_schema
+  category: schema
+  rest:
+  - dslQuery
+  binding: DSL `describe schema` statement against /dsl/v2, then summarised. Cached on disk per SCHEMA_CACHE_PATH.
+  confidence: high
+- tool: refresh_schema
+  category: schema
+  rest:
+  - dslQuery
+  binding: Forces a live `describe schema` call against /dsl/v2, bypassing the cache.
+  confidence: high
+mcp_only:
+- tool: construct_profile_url
+  reason: Pure client-side helper. Builds a canonical dimensions.ai web profile URL from an entity type
+    and ID using the dimensions://schema/profile-urls templates; it makes no API call.
+- tool: fetch_search_pages
+  reason: Also listed in crosswalk[]. Its aggregate and file modes (JSONL/CSV to disk, .meta.json resume
+    sidecar) have no REST equivalent — the API returns one page per call.
+rest_only:
+- operationId: authenticate
+  path: /auth
+  method: post
+  reason: The MCP server performs the API-key-for-JWT exchange internally and never exposes it as a tool.
+    An agent using MCP never sees the token.
+coverage:
+  mcp_tools: 27
+  rest_operations: 2
+  tools_bound_to_rest: 26
+  tools_mcp_only: 1
+  rest_operations_unbound: 1
+  distinct_operationids_used: 1

@@ -1,0 +1,180 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  Probed https://www.dimensions.ai/.well-known/oauth-authorization-server and
+  /.well-known/oauth-protected-resource; read https://docs.dimensions.ai/dsl/api.html,
+  https://docs.dimensions.ai/dsl/faq.html, https://docs.dimensions.ai/dsl/datasource-*.html,
+  https://docs.dimensions.ai/dsl/mcp.html
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Standards and cross-cutting conventions the Dimensions surface actually
+  declares. Two clusters are real here: the OAuth/MCP discovery stack that
+  www.dimensions.ai serves for its remote MCP server, and the scholarly-identifier
+  standards that the DSL data model is built on. Everything not evidenced below is
+  recorded as conforms: false rather than left unstated.
+conformance:
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    First-party MCP servers. Local stdio server published as
+    @digital-science-dsl/dimensions-analytics-mcp (MCP TypeScript SDK v2, JSON
+    Schema 2020-12 tool schemas as of 1.3.0), documented at
+    https://docs.dimensions.ai/dsl/mcp.html. A second remote MCP endpoint answers
+    at https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server (401, MCP-shaped
+    WWW-Authenticate challenge).
+- id: oauth2
+  name: OAuth 2.0 authorization code with PKCE
+  conforms: true
+  evidence: >-
+    https://www.dimensions.ai/.well-known/oauth-authorization-server (HTTP 200)
+    declares response_types_supported [code], grant_types_supported
+    [authorization_code, refresh_token], code_challenge_methods_supported [S256].
+    Applies to the remote MCP endpoint only, not to the Analytics API.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: >-
+    https://www.dimensions.ai/.well-known/oauth-authorization-server returns 200
+    with issuer, authorization_endpoint, token_endpoint and revocation_endpoint.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence: >-
+    https://www.dimensions.ai/.well-known/oauth-protected-resource returns 200
+    naming resource https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server and
+    authorization_servers [https://www.dimensions.ai]; the 401 from that endpoint
+    carries WWW-Authenticate with a resource_metadata parameter.
+- id: rfc7636
+  name: PKCE
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"] in the authorization-server metadata.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: >-
+    404 on /.well-known/security.txt for dimensions.ai, www.dimensions.ai,
+    app.dimensions.ai, docs.dimensions.ai, help.dimensions.ai and
+    api-lab.dimensions.ai. The 200 at status.dimensions.ai is Atlassian
+    Statuspage's own document (Canonical atlassian.com), not Dimensions'.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are plain application/json with an undocumented envelope; the FAQ
+    publishes only an HTTP status table (400/401/500). No application/problem+json.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence: >-
+    No mutating surface — the API is read-only, so no Idempotency-Key mechanism
+    exists or is required.
+- id: pagination
+  name: Documented pagination
+  conforms: true
+  evidence: >-
+    Offset pagination via DSL `limit`/`skip`, with published caps (1,000 rows per
+    call, 50,000 records per search, 1,000 facet buckets) at
+    https://docs.dimensions.ai/dsl/usagepolicy.html.
+- id: openapi
+  name: OpenAPI description
+  conforms: partial
+  evidence: >-
+    No OpenAPI is published by Dimensions on any probed host. The specs in this
+    repository describe the two documented endpoints and are API Evangelist
+    artifacts, not provider-published ones.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: 404 on /.well-known/openid-configuration across all probed hosts.
+- id: json-api
+  name: JSON:API
+  conforms: false
+  evidence: Responses are a Dimensions-specific JSON shape keyed by source name plus _stats.
+domain_standards:
+- id: doi
+  name: Digital Object Identifier (ISO 26324)
+  conforms: true
+  evidence: >-
+    `doi` is a first-class filterable field on Publications and on the Publication
+    Links auxiliary entity; the MCP server exposes get_by_doi as a dedicated tool.
+    https://docs.dimensions.ai/dsl/datasource-publications.html
+- id: orcid
+  name: ORCID researcher identifier
+  conforms: true
+  evidence: >-
+    `orcid_id` ("ORCID ID", filterable) is a published field on Researchers.
+    https://docs.dimensions.ai/dsl/datasource-researchers.html
+- id: ror
+  name: Research Organization Registry (ROR)
+  conforms: true
+  evidence: >-
+    `ror_id` is a published field on Organizations, and the MCP tool
+    extract_affiliations is documented as resolving affiliation strings to
+    ROR/GRID identifiers.
+    https://docs.dimensions.ai/dsl/datasource-organizations.html
+- id: grid
+  name: Global Research Identifier Database (GRID)
+  conforms: true
+  evidence: >-
+    GRID ids are the organization key throughout the model — funder_groups and
+    research_org_groups resolve names to member GRID ids, and publication
+    affiliations carry GRID identifiers.
+    https://docs.dimensions.ai/dsl/datasource-organizations.html
+- id: pubmed
+  name: PubMed / PubMed Central identifiers
+  conforms: true
+  evidence: >-
+    `pmid` and `pmcid` are published fields on the Publication Links entity, and
+    get_by_pmid is a dedicated MCP tool.
+    https://docs.dimensions.ai/dsl/data-sources.html
+- id: issn
+  name: ISSN
+  conforms: true
+  evidence: >-
+    `issn` (list of known ISSNs, print and electronic) and `issn_electronic`
+    are published fields on Source Titles; `issn` is also a Publications field.
+    https://docs.dimensions.ai/dsl/datasource-source_titles.html
+- id: geonames
+  name: GeoNames / ISO 3166-2
+  conforms: true
+  evidence: >-
+    The States auxiliary entity carries GeoNames state names and ISO-3166-2 codes
+    (e.g. "US.CA" for geonames:5332921).
+    https://docs.dimensions.ai/dsl/data-sources.html
+- id: anzsrc-for
+  name: ANZSRC Fields of Research classification
+  conforms: true
+  evidence: >-
+    FOR category fields are published on Publications and Grants and are available
+    through the DSL classify() function (category_for_2008 was removed in 2.8.0 in
+    favour of the newer FOR scheme).
+    https://docs.dimensions.ai/dsl/releasenotes.html
+- id: un-sdg
+  name: UN Sustainable Development Goals classification
+  conforms: true
+  evidence: >-
+    SDG is one of the classification systems available to the DSL classify()
+    function; release 2.10.0 records "Updated classification system SDG in the
+    classify() function call".
+    https://docs.dimensions.ai/dsl/releasenotes.html
+- id: hrcs
+  name: Health Research Classification System (HRCS)
+  conforms: true
+  evidence: >-
+    `category_hrcs_hc` (HRCS Health Categories) and `category_hrcs_rac` (HRCS
+    Research Activity Codes) are published entity fields on Publications.
+    https://docs.dimensions.ai/dsl/datasource-publications.html
+compliance:
+  certifications: []
+  trust_center: null
+  note: >-
+    No Dimensions or Digital Science trust center, SOC 2 / ISO 27001 attestation
+    page, or bug-bounty programme was found on any probed host
+    (www.digital-science.com/trust-center/ and /security/ both 404;
+    probe-security-programs.py returned vdp=none trust=none). Digital Science does
+    publish an incident notice at
+    https://www.digital-science.com/security-update/ describing a closed and
+    independently verified remediation, but that is a disclosure of one event, not
+    a compliance programme. Recorded as absent rather than inferred.

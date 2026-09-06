@@ -1,0 +1,37 @@
+generated: '2026-09-06'
+method: probed
+source: https://www.dimensions.ai/.well-known/oauth-authorization-server
+docs: https://www.dimensions.ai/.well-known/oauth-protected-resource
+provider: Dimensions
+providerId: dimensions
+description: >-
+  OAuth scopes Dimensions publishes. There is exactly one, and it belongs to the
+  remote MCP endpoint on www.dimensions.ai — not to the Analytics API, which uses
+  an unscoped API key exchanged for a JWT. Recorded because the scope surface is
+  machine-readable and served by the provider, and because a reader looking for
+  Dimensions OAuth scopes needs to know that the Analytics API has none.
+issuer: https://www.dimensions.ai
+authorization_endpoint: https://www.dimensions.ai/oauth/authorize
+token_endpoint: https://www.dimensions.ai/oauth/token
+revocation_endpoint: https://www.dimensions.ai/oauth/revoke
+flows:
+- authorization_code
+- refresh_token
+pkce: S256
+resource: https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server
+scope_count: 1
+scopes:
+- name: mcp
+  description: >-
+    The single scope advertised by both the authorization-server metadata
+    (scopes_supported) and the protected-resource metadata. It grants access to
+    the site's MCP endpoint. No finer-grained read/write split is published, and
+    no per-tool scope mapping is discoverable anonymously.
+  source: https://www.dimensions.ai/.well-known/oauth-authorization-server
+not_applicable:
+  surface: Dimensions Analytics API
+  reason: >-
+    Authentication is an API key exchanged for a JWT. The published OpenAPI
+    declares an apiKey securityScheme and no oauth2 flows, and the docs describe
+    no permission or scope model — entitlements are carried by the institutional
+    subscription attached to the key.

@@ -1,0 +1,108 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/faq.html ("Which are the API error codes?") +
+  https://docs.dimensions.ai/dsl/releasenotes.html +
+  https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md
+  + derived from openapi/_original/dimensions-openapi.yml
+provider: Dimensions
+providerId: dimensions
+format: vendor-json
+rfc9457: false
+description: >-
+  Error catalog for the Dimensions Analytics API. Dimensions publishes a short
+  HTTP status table in the FAQ rather than a machine-readable problem-type
+  registry; the entries below combine that table with the named DSL error strings
+  documented elsewhere in the FAQ and release notes. Responses are plain JSON, not
+  application/problem+json — there is no `type` URI, `title` or `instance` field.
+envelope:
+  content_type: application/json
+  problem_json: false
+  fields:
+    - errors
+  note: >-
+    The published documentation does not specify the error body schema beyond it
+    being valid JSON in UTF-8. Support requests ask users to paste "the exact
+    error message, full body and headers", which is consistent with an
+    undocumented envelope.
+problem_types:
+- status: 400
+  code: semantic-query-error
+  title: Semantic/Query Error
+  detail: The DSL query is not valid.
+  remediation: >-
+    Check the DSL against the Query Syntax reference. Common causes are an unknown
+    field for the source being searched, a deprecated field name, or a malformed
+    `where` clause.
+  source: https://docs.dimensions.ai/dsl/faq.html
+- status: 400
+  code: query-too-long-or-complex
+  title: Query is too long or complex
+  detail: >-
+    The query exceeds the complexity guidelines — too many `and`/`or` conditions,
+    more than 400 items in an `in` clause, more than 100 boolean filter
+    conditions, or more than 100 boolean full-text clauses.
+  remediation: >-
+    Split the query into smaller batches, reduce the number of filter conditions,
+    or narrow with a facet query first.
+  source: https://docs.dimensions.ai/dsl/faq.html
+- status: 401
+  code: authentication-failure
+  title: Authentication Failure / Token Expiration
+  detail: The token has expired or is invalid.
+  remediation: >-
+    Re-POST the API key to /api/auth to mint a fresh JWT — tokens last about two
+    hours. Also check the host: a key issued on a custom instance
+    (<tenant>.dimensions.ai) returns 401 against app.dimensions.ai unless the base
+    URL is set to the issuing host.
+  source: https://docs.dimensions.ai/dsl/faq.html
+- status: 408
+  code: request-timeout
+  title: Request Timeout
+  detail: >-
+    Long-running queries could return 408. Release 2.9.1 (Feb 2024) records a fix
+    for "returning 408 after a short period of time".
+  remediation: Narrow the query; avoid multiple UNNEST clauses in one query.
+  source: https://docs.dimensions.ai/dsl/releasenotes.html
+- status: 429
+  code: rate-limit-exceeded
+  title: Too Many Requests
+  detail: >-
+    More than 30 requests from one IP address in a minute. Enforced at the edge.
+  remediation: >-
+    Self-throttle to 30 requests per minute per IP. No Retry-After or
+    X-RateLimit-* header is returned, so back off on a client-side sliding window
+    with exponential backoff and jitter, as the official MCP client does.
+  source: https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md
+- status: 500
+  code: evaluation-data-timeout-error
+  title: Evaluation/Data/Timeout Error
+  detail: The query could not be evaluated.
+  remediation: >-
+    Simplify the query and retry. If it persists, email supportapi@dimensions.ai
+    with the query, the full response body and headers, and reproduction steps.
+  source: https://docs.dimensions.ai/dsl/faq.html
+warnings:
+- code: deprecated-field
+  title: Deprecated field warning
+  detail: >-
+    Successful responses carry warnings when a query uses fields that have been
+    deprecated in a later minor release. Deprecated fields keep working until the
+    next major version.
+  source: https://docs.dimensions.ai/dsl/releasenotes.html
+- code: multiple-unnest
+  title: Using more than one UNNEST may lead to long response times and timeouts
+  detail: A performance warning returned alongside results.
+  source: https://docs.dimensions.ai/dsl/faq.html
+support:
+  email: supportapi@dimensions.ai
+  required_details:
+    - what you are trying to do and the problem
+    - the exact error message, full body and headers
+    - reproduction steps
+    - proxies, firewalls, or other network context
+  source: https://docs.dimensions.ai/dsl/faq.html
+coverage_note: >-
+  The published OpenAPI declares only a 200 response for each of its two
+  operations, so none of these statuses are described in the contract. That is a
+  contract gap worth reporting to the provider, not an absence of error semantics.

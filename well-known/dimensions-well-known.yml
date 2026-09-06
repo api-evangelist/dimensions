@@ -1,0 +1,160 @@
+generated: '2026-09-06'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/ path list on every host this record
+  knows, run 2026-09-06.
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Well-known discovery documents served by Dimensions hosts. Two real documents
+  were found, both on www.dimensions.ai and both belonging to a live remote MCP
+  server the marketing site runs: RFC 8414 authorization-server metadata and
+  RFC 9728 protected-resource metadata. Every other named path 404s. The
+  security.txt served at status.dimensions.ai is Atlassian Statuspage's own
+  vendor document (Canonical: https://www.atlassian.com/.well-known/security.txt)
+  and is NOT a Dimensions disclosure policy — it is recorded here as a probe
+  result and deliberately not wired as a SecurityTxt pointer.
+hosts:
+- host: www.dimensions.ai
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: dimensions-oauth-authorization-server.json
+    note: >-
+      RFC 8414 metadata. issuer https://www.dimensions.ai, PKCE S256, scope
+      "mcp", client_id_metadata_document_supported true. Served after a 301 to
+      the trailing-slash form.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: dimensions-oauth-protected-resource.json
+    note: >-
+      RFC 9728 metadata naming the protected resource
+      https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: dimensions.ai
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: dimensions-oauth-authorization-server.json
+    note: Apex serves the identical document as www (same WordPress origin).
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: dimensions-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: app.dimensions.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: docs.dimensions.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: api-lab.dimensions.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: help.dimensions.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: status.dimensions.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: >-
+      NOT a Dimensions document. Atlassian Statuspage serves its own PGP-signed
+      security.txt on every customer status host — Contact
+      security@atlassian.com, Canonical
+      https://www.atlassian.com/.well-known/security.txt. Recorded as a vendor
+      artifact and not saved or credited to Dimensions.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+observations:
+- >-
+  https://www.digital-science.com/llms.txt returns 200 (178 KB) — an llms.txt
+  published by the PARENT company, Digital Science, on a different registrable
+  domain. It is recorded here for completeness and is not claimed as a
+  dimensions.ai artifact.

@@ -1,0 +1,81 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/api.html + registry metadata from
+  pypi.org/pypi/dimcli/json and registry.npmjs.org
+provider: Dimensions
+providerId: dimensions
+description: >-
+  First-party and third-party client libraries for the Dimensions Analytics API
+  (DSL). Digital Science publishes two official packages: the dimcli Python
+  client/CLI and the Dimensions Analytics MCP server. Versions and publication
+  dates were read from each registry's metadata endpoint on 2026-09-06.
+packages:
+- name: dimcli
+  registry: pypi
+  url: https://pypi.org/project/dimcli/
+  language: python
+  official: true
+  version: '1.8'
+  published: '2026-07-10'
+  license: MIT
+  repository: https://github.com/digital-science/dimcli
+  releases: 115
+  description: >-
+    Python client and interactive CLI for the Dimensions Analytics API. Handles
+    the /api/auth token exchange, DSL query submission, pagination, and pandas
+    dataframe conversion. Ships the `dimcli` terminal console.
+  source: https://pypi.org/pypi/dimcli/json
+- name: '@digital-science-dsl/dimensions-analytics-mcp'
+  registry: npm
+  url: https://www.npmjs.com/package/@digital-science-dsl/dimensions-analytics-mcp
+  language: typescript
+  official: true
+  version: 1.4.1
+  published: '2026-09-06'
+  license: MIT
+  repository: https://github.com/digital-science/dimensions-analytics-mcp
+  releases: 15
+  binaries:
+  - dimensions-analytics-mcp
+  - dimensions-analytics-mcp-http
+  description: >-
+    Dimensions Analytics MCP server. Local stdio MCP server (Node.js 20+) that
+    exposes 28 tools over the Dimensions DSL API. First published 2026-06-18.
+  source: https://registry.npmjs.org/@digital-science-dsl/dimensions-analytics-mcp
+third_party:
+- name: dimensionsR
+  registry: cran
+  url: https://cran.r-project.org/package=dimensionsR
+  language: r
+  official: false
+  version: 0.0.3
+  published: '2022-02-07'
+  repository: https://github.com/massimoaria/dimensionsR
+  description: >-
+    Community R package for gathering bibliographic data through the Dimensions
+    API and DSL. Listed by Dimensions under "Third-party Libraries and Tools".
+  source: https://crandb.r-pkg.org/dimensionsR
+- name: rdimensions
+  registry: github
+  url: https://github.com/nicholasmfraser/rdimensions
+  language: r
+  official: false
+  version: null
+  published: null
+  note: >-
+    Community R client listed in the Dimensions docs. Not published to CRAN, so
+    no registry metadata endpoint answers for it — checked, nothing to record.
+  source: https://docs.dimensions.ai/dsl/api.html
+- name: sidewall
+  registry: github
+  url: https://github.com/caltechlibrary/sidewall
+  language: python
+  official: false
+  version: null
+  published: null
+  note: >-
+    Community Python object layer over the Dimensions API, listed in the
+    Dimensions docs. pypi.org/pypi/sidewall/json returned no package record on
+    2026-09-06 — checked, nothing to record.
+  source: https://docs.dimensions.ai/dsl/api.html

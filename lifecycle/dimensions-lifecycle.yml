@@ -1,0 +1,112 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/releasenotes.html, https://docs.dimensions.ai/dsl/api.html,
+  https://docs.dimensions.ai/dsl/faq.html, https://status.dimensions.ai/
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Versioning, deprecation and operational lifecycle for the Dimensions Analytics
+  API. Dimensions runs an unusually explicit deprecation regime for a
+  subscription-only API: fields are deprecated in the release notes and kept
+  working until the next major version, and a public Deprecations History page
+  lists every deprecated field, search index and function.
+versioning:
+  scheme: path major version + documented minor releases
+  current_major: v2
+  current_documented_version: '2.15'
+  schema_version_reported: 2.15.1
+  endpoint_current: /api/dsl/v2
+  endpoint_alias: /api/dsl
+  endpoint_alias_alt: /api/dsl.json
+  auth_endpoint_unversioned: /api/auth
+  cadence: minor release roughly every two weeks
+  breaking_change_policy: >-
+    "We strive to make the API always backward-compatible by never introducing
+    changes to the query syntax or the data model that will alter significantly
+    their behaviour." Improved data points arrive as NEW fields; the old field is
+    deprecated, never deleted. Deprecated fields are removed only at a new major
+    release, and remain available in the legacy version.
+  source: https://docs.dimensions.ai/dsl/faq.html
+deprecation_policy:
+  published: true
+  url: https://docs.dimensions.ai/dsl/releasenotes.html
+  mechanism: >-
+    Deprecations are announced in the dated release notes and catalogued on the
+    Deprecations History section of the same page, split into Deprecated Fields,
+    Partially Deprecated Fields, Deprecated Search Indexes and Deprecated
+    Functions. Queries using a deprecated field keep working and return a warning
+    in the response payload.
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    Signalling is in the response body and the docs, not in RFC 8594
+    Sunset/Deprecation headers.
+retirements:
+- version: v1
+  endpoint: /api/dsl/v1
+  status: removed
+  date: '2022-03'
+  note: >-
+    "V1 API. Currently in maintenance mode. Removed in March 2022." The /api/dsl
+    and /api/dsl.json aliases pointed at V1 until December 2021 and have pointed
+    at V2 since.
+  source: https://docs.dimensions.ai/dsl/api.html
+recent_deprecations:
+- version: '2.15'
+  date: '2026-05'
+  items:
+  - research_org_country_names superseded by research_org_countries (Publications)
+  - research_org_state_names superseded by research_org_states (Publications)
+  - title_language and language_desc superseded by language_detected (Datasets)
+  - acronym superseded by acronyms (Organizations)
+  - funder_org_acronym superseded by funders (Grants)
+- version: '2.13'
+  date: '2025-11'
+  items:
+  - last_year and total_publications deprecated in Source Titles (data not available)
+- version: '2.7.0'
+  date: '2023-05'
+  items:
+  - publisher deprecated in Source Titles
+- version: '2.6.0'
+  date: '2023-02'
+  items:
+  - date deprecated in favour of start_date (Clinical Trials)
+- version: '2.5.0'
+  date: '2022-12'
+  items:
+  - sorting by title discouraged; to be disallowed in future
+status_page:
+  published: true
+  url: https://status.dimensions.ai/
+  provider: Atlassian Statuspage
+  page_id: x512k71w45tn
+  api: https://status.dimensions.ai/api/v2/status.json
+  history: https://status.dimensions.ai/history
+  probed_status: 200
+  probed_indicator: none ("All Systems Operational", 2026-09-06)
+sla:
+  published: false
+  note: >-
+    No public SLA. Availability commitments, if any, sit inside the institutional
+    subscription contract.
+support:
+  email: supportapi@dimensions.ai
+  help_center: https://help.dimensions.ai/
+  contact: https://www.dimensions.ai/contact-us/
+deprecated_operations:
+  count: 0
+  note: >-
+    No operation in the published OpenAPI is marked deprecated. Deprecation in
+    this API happens at the DSL field level, which the two-operation contract
+    cannot express.
+client_lifecycle:
+- name: Dimensions Analytics MCP
+  version: 1.4.1
+  published: '2026-09-06'
+  first_release: '2026-06-18'
+- name: dimcli
+  version: '1.8'
+  published: '2026-07-10'

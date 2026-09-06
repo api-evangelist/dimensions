@@ -1,0 +1,76 @@
+overlay: 1.0.0
+info:
+  title: Dimensions Query API — API Evangelist enhancements
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-06'
+  method: generated
+  source: >-
+    https://docs.dimensions.ai/dsl/api.html, https://docs.dimensions.ai/dsl/faq.html,
+    https://docs.dimensions.ai/dsl/usagepolicy.html,
+    https://docs.dimensions.ai/dsl/language.html
+  extends: openapi/dimensions-query-api-openapi.yml
+  note: >-
+    Captures documented facts the published contract omits — the DSL body, the
+    version aliases, the published technical limits, the error statuses, and the
+    absence of rate-limit headers. Nothing here is invented. The original OpenAPI
+    is never mutated.
+actions:
+- target: $.info
+  update:
+    contact:
+      name: Dimensions API Support
+      email: supportapi@dimensions.ai
+    externalDocs:
+      description: Dimensions Search Language reference
+      url: https://docs.dimensions.ai/dsl/language.html
+- target: $.servers[0]
+  update:
+    description: >-
+      Standard Dimensions instance. Custom instances use https://<tenant>.dimensions.ai
+      and a key issued there returns 401 against app.dimensions.ai.
+- target: $.paths['/dsl/v2'].post
+  update:
+    description: >-
+      Executes a Dimensions Search Language query. The request body is a raw DSL
+      string, not JSON. The response is a JSON object keyed by the queried source
+      plus a `_stats` block carrying `total_count`. /dsl and /dsl.json are aliases
+      for the current major version; /dsl/v1 was removed in March 2022.
+    x-alternate-paths:
+    - /dsl
+    - /dsl.json
+    x-read-only: true
+    x-limits:
+      requests_per_ip_per_minute: 30
+      max_rows_per_call: 1000
+      max_paginated_records: 50000
+      max_facet_buckets: 1000
+      max_in_clause_items: 400
+      max_boolean_filter_conditions: 100
+      max_boolean_fulltext_clauses: 100
+    x-rate-limit-headers: none
+    externalDocs:
+      description: Reasonable Use and Technical Limits
+      url: https://docs.dimensions.ai/dsl/usagepolicy.html
+- target: $.paths['/dsl/v2'].post.responses
+  update:
+    '400':
+      description: >-
+        Semantic/Query Error — the DSL query is not valid, or is too long or too
+        complex.
+    '401':
+      description: Authentication Failure or Token Expiration.
+    '408':
+      description: Request timeout on a long-running query.
+    '429':
+      description: >-
+        Rate limit exceeded. 30 requests per IP address per minute. No Retry-After
+        or X-RateLimit-* header is returned.
+    '500':
+      description: Evaluation/Data/Timeout Error — the query could not be evaluated.
+- target: $.components.securitySchemes.jwt
+  update:
+    description: >-
+      Authorization header carrying the literal keyword JWT followed by the token
+      returned by POST /auth, e.g. `Authorization: JWT eyJ...`. The keyword is JWT,
+      not Bearer. Tokens last about two hours.

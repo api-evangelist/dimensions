@@ -1,0 +1,193 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://github.com/digital-science/dimensions-analytics-mcp (README, docs/USAGE.md,
+  docs/REFERENCE.md, docs/INSTALLATION.md) + https://docs.dimensions.ai/dsl/mcp.html
+  + probed https://www.dimensions.ai/wp-json/mcp
+provider: Dimensions
+providerId: dimensions
+status: published
+description: >-
+  Digital Science publishes first-party MCP servers for Dimensions. The flagship
+  is the Dimensions Analytics MCP — an open-source (MIT) local stdio server on
+  npm that exposes 27 tools plus 10 resources over the Dimensions DSL API using
+  the subscriber's own API key. A second, separately reachable remote MCP
+  endpoint runs on the www.dimensions.ai WordPress site and is OAuth-gated. A
+  third server, Dimensions Semantic Search MCP, was announced 2026-08-10 but is
+  request-access only with no public endpoint or package.
+deployment:
+  mode: both
+  endpoint: https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server
+  install: npx -y @digital-science-dsl/dimensions-analytics-mcp
+  package: https://www.npmjs.com/package/@digital-science-dsl/dimensions-analytics-mcp
+  auth: oauth
+  verified: probed
+  note: >-
+    The two halves are DIFFERENT servers, not two transports of one product.
+    `install` is the Dimensions Analytics MCP (local stdio, Node 20+, API key in
+    DIMENSIONS_API_KEY) — the server documented at docs.dimensions.ai/dsl/mcp.html
+    and the one that reaches research data. `endpoint` is a separate remote MCP
+    server the marketing site runs (WordPress MCP adapter), advertised by RFC 9728
+    protected-resource metadata and gated by OAuth (scope "mcp", PKCE S256); its
+    tool list is not readable anonymously. A HOSTED Analytics MCP — URL plus
+    bearer token, no Node install — is explicitly "coming soon" and NOT available
+    (docs/INSTALLATION.md, "Hosted Dimensions Analytics MCP (coming soon)").
+servers:
+- name: Dimensions Analytics MCP
+  mode: local-stdio
+  official: true
+  license: MIT
+  repository: https://github.com/digital-science/dimensions-analytics-mcp
+  package: '@digital-science-dsl/dimensions-analytics-mcp'
+  registry: npm
+  version: 1.4.1
+  published: '2026-09-06'
+  install: npx -y @digital-science-dsl/dimensions-analytics-mcp
+  guided_install: bash -c "$(curl -fsSL https://raw.githubusercontent.com/digital-science/dimensions-analytics-mcp/main/scripts/install.sh)"
+  client_config_key: dimensions
+  runtime: Node.js 20+
+  auth: api-key
+  auth_detail: >-
+    DIMENSIONS_API_KEY — the same Dimensions Analytics API key used for the DSL
+    API. DIMENSIONS_BASE_URL is required for custom instances (default
+    https://app.dimensions.ai). Subscription-only; MCP access is available to API
+    subscribers under the same Reasonable Use terms.
+  clients_autoconfigured:
+  - Claude Desktop
+  - Cursor
+  - VS Code (Copilot)
+  - Windsurf
+  announced: '2026-08-10'
+  source: https://docs.dimensions.ai/dsl/mcp.html
+- name: Dimensions marketing-site MCP (WordPress MCP adapter)
+  mode: remote
+  official: true
+  endpoint: https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server
+  transport: streamable-http
+  auth: oauth
+  auth_detail: >-
+    401 with WWW-Authenticate: Bearer realm="https://www.dimensions.ai",
+    resource_metadata="https://www.dimensions.ai/.well-known/oauth-protected-resource".
+    Authorization server https://www.dimensions.ai, scope "mcp", PKCE S256,
+    token_endpoint_auth_methods_supported ["none"] (public clients),
+    client_id_metadata_document_supported true.
+  probe:
+    url: https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server
+    method: POST tools/list
+    http_status: 401
+    body: '{"code":"mcp_unauthorized","message":"MCP authentication required."}'
+    fetched: '2026-09-06'
+  tools: []
+  tools_note: >-
+    Live tool schemas require authenticated introspection. Not enumerated — no
+    tools are asserted for this server.
+  sibling_route: /wp-json/mcp/mcp-adapter-default-server (POST returns 401 rest_forbidden)
+  source: https://www.dimensions.ai/.well-known/oauth-protected-resource
+- name: Dimensions Semantic Search MCP
+  mode: none
+  official: true
+  status: request-access
+  endpoint: null
+  package: null
+  auth: unknown
+  announced: '2026-08-10'
+  note: >-
+    Announced alongside the Analytics MCP as a concept-aware search layer across
+    40+ life science domains. No public endpoint, package, or repository was
+    found; the vendor page offers only "Request access".
+  source: https://www.digital-science.com/model-context-protocol-mcp/
+tools:
+- name: search_publications
+  description: Search research articles, preprints, and books with citation metrics
+- name: search_grants
+  description: Search research grants and funding awards
+- name: search_researchers
+  description: Search researcher profiles with publication counts and affiliations
+- name: search_patents
+  description: Search patents with assignee and filing information
+- name: search_clinical_trials
+  description: Search clinical trials by phase, condition, or status
+- name: search_datasets
+  description: Search research datasets and repositories
+- name: search_policy_documents
+  description: Search policy briefs and government documents
+- name: search_organizations
+  description: Search universities, research institutes, and companies
+- name: search_reports
+  description: Search technical reports
+- name: search_source_titles
+  description: Search journals, preprint platforms, book series, and proceedings
+- name: search_funder_groups
+  description: Search curated funder groups (name to member GRID ids)
+- name: search_research_org_groups
+  description: Search curated research organization groups (name to member GRID ids)
+- name: fetch_search_pages
+  description: Paginated / batch search (page, aggregate, JSONL/CSV export) — local stdio only
+- name: get_by_doi
+  description: Retrieve publication by DOI
+- name: get_by_pmid
+  description: Retrieve publication by PubMed ID
+- name: get_by_id
+  description: Retrieve any entity by Dimensions ID
+- name: construct_profile_url
+  description: Build a canonical Dimensions web profile URL from entity type + ID
+- name: aggregate_query
+  description: Numeric aggregation (sum/avg/count) over any entity with grouping
+- name: facet_query
+  description: Facet counts for top values of any field
+- name: citation_trend
+  description: Citation counts over time for a topic or entity
+- name: funding_trend
+  description: Funding awarded over time for a topic or entity
+- name: extract_affiliations
+  description: Resolve organization affiliations to GRID/ROR identifiers
+- name: extract_grants
+  description: Resolve grant numbers to full grant records
+- name: similar_documents
+  description: Find publications/grants with similar topics from abstract text (concept-based)
+- name: execute_dsl
+  description: Execute raw Dimensions DSL queries (classify, extract concepts, KWQ, and more)
+- name: describe_schema
+  description: Summarize live describe schema (sources, entities, limits)
+- name: refresh_schema
+  description: Reload describe schema from the API
+tools_source: >-
+  https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/USAGE.md#all-mcp-tools
+  — names and descriptions verbatim from the provider's own table. Input schemas
+  were not read from a live tools/list (the local server requires a subscriber
+  API key), so no parameter shapes are asserted here.
+resources:
+- uri: dimensions://schema/summary
+  description: Compact catalog overview — use on cold-start
+- uri: dimensions://schema
+  description: Full raw describe payload
+- uri: dimensions://schema/version
+  description: DSL version string
+- uri: dimensions://schema/limits
+  description: Numeric caps (maxLimit, maxPages, etc.)
+- uri: dimensions://schema/policy
+  description: Reasonable-use rules and MCP guardrails
+- uri: dimensions://schema/profile-urls
+  description: Canonical Dimensions web profile URL templates
+- uri: dimensions://schema/sources/{name}
+  description: Fields, facets, metrics for a source
+- uri: dimensions://fields/{entityType}
+  description: Filterable/facet fields + alias hints
+- uri: dimensions://examples
+  description: All curated example queries
+- uri: dimensions://examples/{source}
+  description: Per-source DSL examples
+guardrails:
+  rate_limit_per_minute: 30
+  max_rows_per_call: 1000
+  default_rows_per_call: 100
+  max_paginated_records: 50000
+  facet_buckets: 1000
+  large_result_warning_threshold: 10000
+  confirm_large_fetch_required_when:
+  - skip >= 5000
+  - page >= 5
+  - limit = 1000 with skip > 0
+  - maxPages > 5
+  - planned records > 5000
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html

@@ -1,0 +1,51 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/gsheets.html + https://docs.dimensions.ai/dsl/excel.html
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Dimensions publishes two first-party spreadsheet connectors that embed the
+  Analytics API inside an end-user application. They are distinct from the SDKs in
+  packages/ — they are installable add-ins with their own permission model and
+  their own function surface, aimed at analysts rather than developers. Both
+  require an active Dimensions API subscription.
+families:
+- name: Dimensions API Connector for Google Sheets
+  kind: spreadsheet add-on
+  platform: Google Workspace
+  distribution: Google Workspace Marketplace
+  docs: https://docs.dimensions.ai/dsl/gsheets.html
+  auth: Google OAuth 2.0 for the add-on; Dimensions API subscription for data access
+  runtime: Google Apps Script (runs entirely inside the user's Google account)
+  permissions:
+  - See, edit, create and delete your spreadsheets in Google Drive
+  - Display and run third-party web content in prompts and sidebars
+  - Connect to an external service (the Dimensions API)
+  capabilities:
+  - Launch DSL queries from a Sheets sidebar
+  - Transform JSON responses into tabular rows and columns
+  privacy_notice: >-
+    A dedicated API Connector privacy notice supplements the Dimensions Privacy
+    Policy; spreadsheet data does not leave the user's Google account.
+- name: Dimensions API Connector for Microsoft Excel
+  kind: spreadsheet add-in
+  platform: Microsoft Excel
+  distribution: Microsoft AppSource
+  docs: https://docs.dimensions.ai/dsl/excel.html
+  auth: Dimensions API subscription with API access enabled
+  capabilities:
+  - Run raw DSL queries into the active sheet or a generated sheet
+  - Automatic flattening of nested JSON into tabular data
+  - Native worksheet functions
+  functions:
+  - signature: =DIMENSIONS.RUN(query, [pages], [returnHeader])
+    description: >-
+      Returns a table of DSL results positioned at the current cell. `pages` is
+      the number of 1,000-record pages to retrieve; `returnHeader` optionally
+      includes a field-name header row.
+  - signature: =DIMENSIONS_TOTAL(query)
+    description: Returns a single value — the total result count for the query.
+  parity_note: >-
+    Documented as providing parity with the Google Sheets Connector using native
+    Excel performance.

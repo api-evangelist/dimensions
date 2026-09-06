@@ -1,16 +1,96 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/dimensions-openapi.yml
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/api.html (Getting an API Key / Querying the API /
+  API Endpoints), https://docs.dimensions.ai/dsl/faq.html,
+  https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md,
+  and probed https://www.dimensions.ai/.well-known/oauth-authorization-server
+docs: https://docs.dimensions.ai/dsl/api.html
 summary:
   types:
   - apiKey
+  - oauth2
   api_key_in:
   - header
+  note: >-
+    Two separate auth surfaces. The Analytics API uses an API key exchanged for a
+    short-lived JWT sent in the Authorization header. The remote MCP endpoint on
+    www.dimensions.ai uses OAuth 2.0 authorization code with PKCE and is unrelated
+    to the Analytics API key.
 schemes:
 - name: jwt
   type: apiKey
   in: header
   parameter: Authorization
-  description: Pass `JWT {token}` returned by /auth
+  value_format: 'JWT {token}'
+  description: >-
+    Bearer-style JWT obtained from the token exchange. The scheme keyword is
+    literally `JWT`, not `Bearer` — sending `Bearer <token>` fails.
+  applies_to:
+  - Dimensions Analytics API
   sources:
-  - openapi/dimensions-openapi.yml
+  - openapi/dimensions-authentication-api-openapi.yml
+  - openapi/dimensions-query-api-openapi.yml
+  - https://docs.dimensions.ai/dsl/api.html
+- name: mcp-oauth
+  type: oauth2
+  flow: authorization_code
+  pkce: S256
+  issuer: https://www.dimensions.ai
+  authorization_endpoint: https://www.dimensions.ai/oauth/authorize
+  token_endpoint: https://www.dimensions.ai/oauth/token
+  revocation_endpoint: https://www.dimensions.ai/oauth/revoke
+  scopes:
+  - mcp
+  token_endpoint_auth_methods_supported:
+  - none
+  applies_to:
+  - Dimensions marketing-site MCP endpoint (https://www.dimensions.ai/wp-json/mcp/mcp-oauth-server)
+  sources:
+  - well-known/dimensions-oauth-authorization-server.json
+  - well-known/dimensions-oauth-protected-resource.json
+token_exchange:
+  step_1:
+    operationId: authenticate
+    method: POST
+    url: https://app.dimensions.ai/api/auth
+    alt_url: https://app.dimensions.ai/api/auth.json
+    body: '{"key": "<your API key>"}'
+    content_type: application/json
+    response: '{"token": "<JWT>"}'
+  step_2:
+    operationId: dslQuery
+    method: POST
+    url: https://app.dimensions.ai/api/dsl/v2
+    header: 'Authorization: JWT {token}'
+    body: a raw DSL query string (text/plain)
+  token_lifetime: approximately 2 hours
+  refresh: no refresh token — re-POST the API key to /api/auth
+  source: https://docs.dimensions.ai/dsl/api.html
+key_management:
+  issuance: >-
+    Self-service inside the Dimensions web application once the institution has
+    API access — "My Account" > settings. Institutional subscription is a
+    prerequisite; there is no self-serve developer signup.
+  key_url: https://app.dimensions.ai/account/settings/general
+  rotation: not documented
+  scopes: none — the Analytics key carries the subscription's entitlements
+  storage_warning: >-
+    The provider's MCP documentation warns that MCP client config files store the
+    key in plain text and must never be committed or shared.
+  source: https://docs.dimensions.ai/dsl/mcp.html
+multi_tenancy:
+  pattern: '<tenant>.dimensions.ai'
+  default_host: https://app.dimensions.ai
+  note: >-
+    Keys are host-scoped. A key issued on a custom instance returns 401
+    Unauthorized against app.dimensions.ai; the base URL must be set to the
+    issuing host (DIMENSIONS_BASE_URL for the MCP server, `endpoint=` for dimcli).
+  source: https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md
+failure_modes:
+- status: 401
+  cause: token expired or invalid
+  remedy: mint a new token via /api/auth
+- status: 401
+  cause: key issued on a different Dimensions instance
+  remedy: point the client at the issuing host

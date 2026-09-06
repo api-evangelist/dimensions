@@ -1,0 +1,60 @@
+overlay: 1.0.0
+info:
+  title: Dimensions Authentication API — API Evangelist enhancements
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-06'
+  method: generated
+  source: >-
+    https://docs.dimensions.ai/dsl/api.html, https://docs.dimensions.ai/dsl/faq.html,
+    https://docs.dimensions.ai/dsl/usagepolicy.html
+  extends: openapi/dimensions-authentication-api-openapi.yml
+  note: >-
+    Captures documented facts the published contract omits — token lifetime, the
+    documented error statuses, the alternate .json path, and the multi-tenant host
+    rule. Nothing here is invented; every action cites a docs page. The original
+    OpenAPI is never mutated.
+actions:
+- target: $.info
+  update:
+    contact:
+      name: Dimensions API Support
+      email: supportapi@dimensions.ai
+    externalDocs:
+      description: Dimensions DSL API Access documentation
+      url: https://docs.dimensions.ai/dsl/api.html
+- target: $.servers[0]
+  update:
+    description: >-
+      Standard Dimensions instance. Custom instances use https://<tenant>.dimensions.ai
+      and a key issued there returns 401 against app.dimensions.ai.
+- target: $.paths['/auth'].post
+  update:
+    description: >-
+      Exchanges a Dimensions API key for a query token. The token is a JWT valid for
+      approximately two hours and must be re-obtained when it expires; there is no
+      refresh token. The same request also answers at /auth.json.
+    x-token-lifetime-seconds: 7200
+    x-alternate-paths:
+    - /auth.json
+    externalDocs:
+      description: Querying the API
+      url: https://docs.dimensions.ai/dsl/api.html
+- target: $.paths['/auth'].post.responses
+  update:
+    '400':
+      description: Semantic/Query Error — the request body is not valid.
+    '401':
+      description: Authentication failure — the API key is invalid.
+    '429':
+      description: >-
+        Rate limit exceeded. 30 requests per IP address per minute. No Retry-After
+        or X-RateLimit-* header is returned.
+    '500':
+      description: Evaluation/Data/Timeout Error — the request could not be evaluated.
+- target: $.components.securitySchemes.jwt
+  update:
+    description: >-
+      Authorization header carrying the literal keyword JWT followed by the token
+      returned by POST /auth, e.g. `Authorization: JWT eyJ...`. The keyword is JWT,
+      not Bearer.

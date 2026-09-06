@@ -1,0 +1,46 @@
+generated: '2026-09-06'
+method: generated
+source: >-
+  openapi/dimensions-authentication-api-openapi.yml,
+  openapi/dimensions-query-api-openapi.yml, mcp/dimensions-mcp.yml,
+  conventions/dimensions-conventions.yml, errors/dimensions-problem-types.yml,
+  rate-limits/dimensions-rate-limits.yml, and the Dimensions DSL documentation
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Packaged Agent Skills for the Dimensions Analytics API. Every operationId cited
+  (authenticate, dslQuery) exists in this repository's OpenAPI, and every MCP tool
+  cited exists in the provider's published tool table. DSL snippets are copied
+  from the Dimensions Example Queries page rather than composed by us.
+skills:
+- name: dimensions-authenticate-and-query
+  file: dimensions-authenticate-and-query.md
+  description: >-
+    The base flow — API key to JWT, DSL over HTTP, the response envelope, the
+    published limits, and the documented error statuses.
+  operations:
+  - authenticate
+  - dslQuery
+- name: dimensions-literature-search
+  file: dimensions-literature-search.md
+  description: >-
+    Find publications, patents, trials and datasets; resolve DOI/PMID/Dimensions
+    IDs; find topic-similar work from an abstract; link back canonically.
+  operations:
+  - authenticate
+  - dslQuery
+- name: dimensions-funding-and-impact-analytics
+  file: dimensions-funding-and-impact-analytics.md
+  description: >-
+    Facet and aggregate instead of retrieving — funders, organizations, funding
+    and citation trends, and entity resolution to GRID/ROR before filtering.
+  operations:
+  - authenticate
+  - dslQuery
+guardrails:
+  read_only: true
+  reasonable_use: https://docs.dimensions.ai/dsl/usagepolicy.html
+  note: >-
+    All three skills carry the same non-negotiable rules: subscription-only
+    access, 30 requests per IP per minute with no rate-limit headers, no bulk
+    extraction, no local mirroring, no model training on retrieved records.

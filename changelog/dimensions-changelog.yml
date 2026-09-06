@@ -1,0 +1,99 @@
+generated: '2026-09-06'
+method: searched
+source: https://docs.dimensions.ai/dsl/releasenotes.html
+provider: Dimensions
+providerId: dimensions
+url: https://docs.dimensions.ai/dsl/releasenotes.html
+description: >-
+  Dated release notes for the Dimensions Analytics API (DSL v2), published on the
+  provider's documentation site as "Release Notes and Deprecations". Entries are
+  dated by month and week rather than by day. Recent window only.
+scheme: semver-ish (major.minor[.patch]) dated by month/week
+current_version: '2.15'
+cadence: roughly every two weeks for minor releases
+entries:
+- version: MCP 1.x
+  date: '2026-08'
+  date_label: 2026, August, Week of 10th
+  breaking: false
+  additions:
+  - New MCP server "Dimensions Analytics MCP" released.
+  highlights: >-
+    First MCP server release, announced the same week as the Dimensions Semantic
+    Search MCP.
+- version: '2.15'
+  date: '2026-05'
+  date_label: 2026, May, Week of 4th
+  breaking: false
+  additions:
+  - New optional `limit` argument for similar_documents (default 250 concepts, max 2000).
+  - New field concepts_relevant in Publications (ML-derived, relevance >= 0.6).
+  deprecations:
+  - research_org_country_names -> research_org_countries (Publications)
+  - research_org_state_names -> research_org_states (Publications)
+  - title_language, language_desc -> language_detected (Datasets)
+  - acronym -> acronyms (Organizations)
+  - funder_org_acronym -> funders (Grants)
+- version: '2.14'
+  date: '2026-02'
+  date_label: 2026, February, Week of 2nd
+  breaking: false
+  additions:
+  - New fields ultimate_parent_id and hierarchy_details in Organizations.
+- version: '2.13'
+  date: '2025-11'
+  date_label: 2025, November, Week of 10th
+  breaking: false
+  additions:
+  - New fields overall_status and resulting_publications in Clinical Trials.
+  deprecations:
+  - last_year and total_publications in Source Titles (data not available)
+- version: '2.12'
+  date: '2025-07'
+  date_label: 2025, July, Week of 28th
+  breaking: false
+  additions:
+  - New search field `funding` in Publications.
+  - New search field title_abstract_claims in Patents.
+  - New fields last_year and total_publications in Source Titles.
+  - active_status in Grants now retrievable and usable with empty/not empty filters.
+  changes:
+  - Source Titles sorted by score by default.
+  - current_organization_id in publication authors is no longer deprecated.
+- version: 2.10.1
+  date: '2024-08'
+  date_label: 2024, August, Week of 28th
+  breaking: false
+  fixes:
+  - Reports field orange_book bug.
+  - Incorrect return value for the classify function.
+- version: 2.10.0
+  date: '2024-04'
+  date_label: 2024, April, Week of 29th
+  breaking: false
+  additions:
+  - New operator — Lucene field searches with @.
+  - New field research_org_types in Publications and Grants.
+  changes:
+  - Updated SDG classification system in classify().
+- version: 2.9.1
+  date: '2024-02'
+  date_label: 2024, February, Week of 12th
+  breaking: false
+  changes:
+  - Publications now sorted by relevance by default instead of date.
+  - Researchers filtered for obsolete researchers by default.
+  - Updated versions of concepts, RCDC and UoA fields.
+  fixes:
+  - 408 returned after a short period of time.
+- version: 2.9.0
+  date: '2024-01'
+  date_label: 2024, January, Week of 29th
+  breaking: false
+  additions:
+  - New field document_type in Publications.
+  - New return function prettify.
+  - New field active_status in Grants.
+entries_note: >-
+  Older entries (2.8.0 back to 2.0.0, October 2021) remain on the same page;
+  release notes predating v2 are on the legacy API Version 1 documentation.

@@ -1,0 +1,210 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/data-sources.html and the per-source references
+  https://docs.dimensions.ai/dsl/datasource-*.html (DSL 2.15.1)
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Entity graph for the Dimensions Analytics API. The graph could not be derived
+  from the OpenAPI — the published contract has no components.schemas, because the
+  entire data model lives inside the DSL rather than in HTTP paths. It is
+  therefore read from the provider's own Data Sources reference: eight primary
+  content types, two curated entity registries plus two group registries, and a
+  set of auxiliary entities that cannot be queried directly but appear as
+  structured fields and facets.
+schema_source: DSL `describe schema` (live), documented at https://docs.dimensions.ai/dsl/data-sources.html
+entities:
+- name: publications
+  kind: primary
+  queryable: true
+  description: Research articles, preprints, book chapters and books with citation metrics.
+  identifiers: [id (pub.*), doi, pmid, pmcid]
+- name: grants
+  kind: primary
+  queryable: true
+  description: Research grants and funding awards.
+  identifiers: [id (grant.*), project_number]
+- name: patents
+  kind: primary
+  queryable: true
+  description: Patents with assignee, filing and family information.
+  identifiers: [id, application_number]
+- name: clinical_trials
+  kind: primary
+  queryable: true
+  description: Clinical trials with phase, condition, status and dates.
+  identifiers: [id]
+- name: policy_documents
+  kind: primary
+  queryable: true
+  description: Policy briefs and government documents.
+  identifiers: [id]
+- name: datasets
+  kind: primary
+  queryable: true
+  description: Research datasets and the repositories that hold them.
+  identifiers: [id, doi]
+- name: source_titles
+  kind: primary
+  queryable: true
+  description: Journals, preprint platforms, book series and proceedings.
+  identifiers: [id (jour.*), issn, issn_electronic]
+- name: reports
+  kind: primary
+  queryable: true
+  description: Technical and institutional reports.
+  identifiers: [id]
+- name: researchers
+  kind: registry
+  queryable: true
+  description: Curated, disambiguated researcher records referenced by every content type.
+  identifiers: [id (ur.*), orcid_id]
+- name: organizations
+  kind: registry
+  queryable: true
+  description: Curated, disambiguated organization records referenced by every content type.
+  identifiers: [id (grid.*), ror_id, country_code]
+- name: funder_groups
+  kind: registry
+  queryable: true
+  description: Curated funder groups resolving a group name to member GRID ids.
+- name: research_org_groups
+  kind: registry
+  queryable: true
+  description: Curated research organization groups resolving a name to member GRID ids.
+- name: states
+  kind: auxiliary
+  queryable: false
+  description: GeoNames state names and ISO-3166-2 codes attached to organizations and affiliations.
+- name: repositories
+  kind: auxiliary
+  queryable: false
+  description: The repository holding a dataset.
+- name: publication_links
+  kind: auxiliary
+  queryable: false
+  description: Cross-identifier block for a publication — doi, pmid, pmcid, Dimensions id.
+- name: open_access
+  kind: auxiliary
+  queryable: false
+  description: >-
+    Open access category (closed, oa_all, gold_bronze, gold_pure, green_sub,
+    gold_hybrid, green_pub, green_acc).
+- name: journals
+  kind: auxiliary
+  queryable: false
+  description: Journal reference attached to a publication (id jour.*, title).
+- name: categories
+  kind: auxiliary
+  queryable: false
+  description: >-
+    Classification entities — FOR (ANZSRC), RCDC, HRCS HC and RAC, ICRP CSO, SDG,
+    UoA — attached as multi-value fields to publications and grants.
+relationships:
+- from: publications
+  to: researchers
+  type: has_many
+  via: authors / researchers
+- from: publications
+  to: organizations
+  type: has_many
+  via: research_orgs (GRID)
+- from: publications
+  to: source_titles
+  type: belongs_to
+  via: journal
+- from: publications
+  to: grants
+  type: has_many
+  via: supporting_grant_ids
+- from: publications
+  to: categories
+  type: has_many
+  via: category_for / category_hrcs_hc / category_hrcs_rac / category_sdg
+- from: publications
+  to: open_access
+  type: belongs_to
+  via: open_access
+- from: publications
+  to: publication_links
+  type: has_one
+  via: linkout identifiers (doi, pmid, pmcid)
+- from: grants
+  to: organizations
+  type: has_many
+  via: funders / research_orgs (GRID)
+- from: grants
+  to: researchers
+  type: has_many
+  via: investigators
+- from: grants
+  to: publications
+  type: has_many
+  via: resulting publications (supporting_grant_ids inverse)
+- from: patents
+  to: organizations
+  type: has_many
+  via: assignees (GRID)
+- from: patents
+  to: publications
+  type: has_many
+  via: cited publications
+- from: clinical_trials
+  to: organizations
+  type: has_many
+  via: sponsors / research_orgs
+- from: clinical_trials
+  to: publications
+  type: has_many
+  via: resulting_publications
+- from: datasets
+  to: publications
+  type: belongs_to
+  via: associated publication
+- from: datasets
+  to: repositories
+  type: belongs_to
+  via: repository
+- from: policy_documents
+  to: publications
+  type: has_many
+  via: cited publications
+- from: organizations
+  to: organizations
+  type: belongs_to
+  via: ultimate_parent_id / hierarchy_details
+- from: organizations
+  to: states
+  type: belongs_to
+  via: state
+- from: funder_groups
+  to: organizations
+  type: has_many
+  via: member GRID ids
+- from: research_org_groups
+  to: organizations
+  type: has_many
+  via: member GRID ids
+- from: researchers
+  to: organizations
+  type: has_many
+  via: current_research_org / research_orgs
+id_prefixes:
+- prefix: pub.
+  entity: publications
+- prefix: grant.
+  entity: grants
+- prefix: ur.
+  entity: researchers
+- prefix: grid.
+  entity: organizations
+- prefix: jour.
+  entity: source_titles
+- prefix: 'geonames:'
+  entity: states / cities
+note: >-
+  Relationship rows are read from the per-source field references and the two
+  cross-link diagrams on the Data Sources page. Field names are given as the DSL
+  publishes them; where a link is expressed by more than one field the `via` value
+  lists the alternatives rather than picking one.

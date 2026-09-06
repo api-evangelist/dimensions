@@ -4,91 +4,108 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Dimensions
 providerId: dimensions
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-06'
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/usagepolicy.html and https://docs.dimensions.ai/dsl/api.html
+  ("Technical Limits" / "Important" callouts), corroborated by
+  https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md
+note: >-
+  REPLACES a 2026-05-04 bulk-sweep scaffold that asserted a 10 req/min free tier,
+  a 1,000 req/month quota and X-RateLimit-* response headers. None of that is
+  published by Dimensions. The published limit is a single flat 30 requests per
+  IP per minute, and the provider's own MCP client documentation states plainly
+  that the API returns NEITHER Retry-After NOR X-RateLimit-* headers.
 tags:
   - Analytics
   - Research
-  - Publications
-  - Grants
-  - Patents
-  - Clinical Trials
-  - Jupyter Notebooks
   - Rate Limiting
   - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Dimensions API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+description: >-
+  Published rate limits and technical caps for the Dimensions Analytics API
+  (DSL v2). The limits are edge-enforced, identical for all subscribers, and
+  documented as not modifiable.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  note: >-
+    No rate-limit signalling headers are returned. The Dimensions Analytics MCP
+    reference states: "The Dimensions API enforces 30 requests per IP per minute
+    at the edge. It does not return Retry-After or X-RateLimit-* headers." The
+    official client therefore prevents 429s with a client-side sliding-window
+    limiter rather than reading a runtime signal. This is a real agent-readiness
+    gap: a consumer cannot discover its remaining budget from a response.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  quotaExceeded: null
+  serviceUnavailable: 500
+limit_count: 1
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
+  - tier: all
+    name: Requests per IP per minute
+    scope: ip
     metric: requests_per_minute
-    limit: 10
-    burst: 20
+    limit: 30
+    burst: null
     timeFrame: minute
+    modifiable: false
     applies:
       - Dimensions Analytics API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Dimensions Analytics API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
+      - Dimensions CRIS API
+    source: https://docs.dimensions.ai/dsl/usagepolicy.html
+    note: >-
+      "max. 30 requests per IP address per minute". Stated on both the Reasonable
+      Use page and the API Access page; the API Access page adds that the same
+      limit covers the CRIS API. Applied per source IP, not per API key, so
+      multiple keys behind one NAT share the budget.
+technical_limits:
+  - name: Items in an `in` filter clause
+    limit: 400
+    example: search publications where id in [...]
+  - name: Boolean filter conditions
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Dimensions Analytics API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Dimensions Analytics API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
+    example: search publications where field1 = value and field2 = value
+  - name: Boolean full-text clauses
+    limit: 100
+    example: 'search publications in authors for "\"Alan Turing\" OR \"Stephen Hawking\""' 
+  - name: Records returned in a single query
     limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Dimensions Analytics API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+  - name: Records returned for a single search via pagination (limit + skip)
+    limit: 50000
+    note: 50 pages of 1,000 records
+  - name: Facet buckets returned
+    limit: 1000
+    note: No pagination possible on facets
+technical_limits_source: https://docs.dimensions.ai/dsl/usagepolicy.html
+token_limits:
+  note: >-
+    "Your subscription to use the API may include a defined number of tokens. Any
+    tokens generated in excess of that number may be revoked without notice, or
+    subject to additional charges." The number is set per subscription contract
+    and is not published.
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+reasonable_use:
+  summary: >-
+    The API is licensed for complex analytical tasks that cannot be done in the
+    Dimensions platform. Building local copies of Dimensions data, using it as an
+    alternative to the API, or using it for model training is prohibited.
+    MCP-mediated access is allowed at Dimensions' discretion and is measured
+    against the average of non-MCP users; unreasonable usage can result in
+    suspension.
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+client_side_mitigation:
+  library: '@digital-science-dsl/dimensions-analytics-mcp'
+  default_cap_per_minute: 30
+  env: DIMENSIONS_RATE_LIMIT_PER_MINUTE
+  retries: 3
+  retry_env: DIMENSIONS_MAX_RETRIES
+  backoff: exponential with jitter, base DIMENSIONS_RETRY_DELAY_MS (default 1000ms)
+  surfaced_fields:
+    - retryAfter
+    - clientRateLimit.remaining
+    - clientRateLimit.retryAfterMs
+  source: https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md

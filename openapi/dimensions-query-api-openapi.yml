@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Dimensions Analytics Authentication Query API
   description: The Dimensions Analytics API provides programmatic access to research data (publications, grants, patents, clinical trials, datasets, policy documents) using the Dimensions Search Language (DSL). Authentication is via a JWT token obtained from POST /api/auth, and queries are issued against POST /api/dsl.

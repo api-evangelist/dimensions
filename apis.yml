@@ -49,8 +49,14 @@ tags:
   - Patents
   - Clinical Trials
   - Jupyter Notebooks
+  - Scientometrics
+  - Bibliometrics
+  - Research Intelligence
+  - Datasets
+  - Policy Documents
+  - MCP
 created: '2025-02-06'
-modified: '2026-04-28'
+modified: '2026-09-06'
 specificationVersion: '0.23'
 apis:
 - aid: dimensions:dimensions-analytics-api
@@ -86,6 +92,7 @@ apis:
 - aid: dimensions:dimensions-authentication-api
   name: Dimensions Authentication API
   description: The Authentication API from Dimensions — 1 operation(s) for authentication.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.dimensions.ai/dsl/
   baseURL: https://app.dimensions.ai/api
   tags:
@@ -93,9 +100,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dimensions-authentication-api-openapi.yml
+  - type: Overlay
+    url: overlays/dimensions-authentication-api-overlay.yaml
 - aid: dimensions:dimensions-query-api
   name: Dimensions Query API
   description: The Query API from Dimensions — 1 operation(s) for query.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.dimensions.ai/dsl/
   baseURL: https://app.dimensions.ai/api
   tags:
@@ -103,6 +113,8 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dimensions-query-api-openapi.yml
+  - type: Overlay
+    url: overlays/dimensions-query-api-overlay.yaml
 common:
   - type: IssueTracker
     url: https://github.com/digital-science/dimcli/issues
@@ -122,9 +134,69 @@ common:
   - type: Documentation
     url: https://docs.dimensions.ai/dsl/
   - type: Support
-    url: https://plus.dimensions.ai/support/
+    url: https://help.dimensions.ai/
   - type: Blog
     url: https://www.dimensions.ai/blog/
+  - type: APIReference
+    url: https://docs.dimensions.ai/dsl/api.html
+  - type: GettingStarted
+    url: https://docs.dimensions.ai/dsl/getting-started.html
+  - type: GitHubOrganization
+    url: https://github.com/digital-science
+  - type: Login
+    url: https://app.dimensions.ai/
+  - type: TermsOfService
+    url: https://www.dimensions.ai/website-terms/
+  - type: PrivacyPolicy
+    url: https://www.dimensions.ai/privacy/
+  - type: StatusPage
+    url: https://status.dimensions.ai/
+  - type: Deprecation
+    url: https://docs.dimensions.ai/dsl/releasenotes.html
+  - type: ChangeLog
+    url: changelog/dimensions-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/dimensions-lifecycle.yml
+  - type: Packages
+    url: packages/dimensions-packages.yml
+  - type: SDKs
+    url: packages/dimensions-packages.yml
+  - type: CLI
+    url: cli/dimensions-cli.yml
+  - type: Components
+    url: components/dimensions-components.yml
+  - type: MCPServer
+    url: mcp/dimensions-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/dimensions-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/dimensions-llms.txt
+  - type: WellKnown
+    url: well-known/dimensions-well-known.yml
+  - type: OAuthScopes
+    url: scopes/dimensions-scopes.yml
+  - type: Conventions
+    url: conventions/dimensions-conventions.yml
+  - type: ErrorCatalog
+    url: errors/dimensions-problem-types.yml
+  - type: Conformance
+    url: conformance/dimensions-conformance.yml
+  - type: DataModel
+    url: data-model/dimensions-data-model.yml
+  - type: Plans
+    url: plans/dimensions-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/dimensions-rate-limits.yml
+  - type: FinOps
+    url: finops/dimensions-finops.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+
+x-enrichment:
+  date: '2026-09-06'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3

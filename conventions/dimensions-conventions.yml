@@ -1,0 +1,156 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/api.html, https://docs.dimensions.ai/dsl/faq.html,
+  https://docs.dimensions.ai/dsl/usagepolicy.html, https://docs.dimensions.ai/dsl/language.html
+  + derived from openapi/_original/dimensions-openapi.yml
+provider: Dimensions
+providerId: dimensions
+description: >-
+  Cross-cutting runtime semantics for the Dimensions Analytics API. The API is a
+  two-endpoint, read-only query surface: exchange an API key for a JWT, then POST
+  a Dimensions Search Language (DSL) string. Almost every convention a normal REST
+  API expresses in paths, methods and headers is instead expressed inside the DSL
+  query body, which is why the OpenAPI is two operations wide and the semantics
+  below matter more than the path list.
+surface_shape:
+  style: query-language-over-http
+  operations: 2
+  mutating_operations: 0
+  read_only: true
+  note: >-
+    POST is used for both operations, but /dsl/v2 is a read operation — POST
+    carries the query text, it does not create a resource.
+authentication:
+  style: api-key exchanged for a bearer-style JWT
+  token_endpoint: POST /api/auth (also /api/auth.json)
+  request_body: '{"key": "<API key>"}'
+  response_field: token
+  header: 'Authorization: JWT {token}'
+  token_lifetime: ~2 hours
+  refresh: re-POST the key to /api/auth; there is no refresh token
+  key_issuance: My Account section of the Dimensions web application
+  scopes: none on the Analytics API
+  cross_ref: authentication/dimensions-authentication.yml
+  source: https://docs.dimensions.ai/dsl/api.html
+  note: >-
+    The scheme name is "JWT", not "Bearer" — a client that sends
+    `Authorization: Bearer <token>` will fail. Custom instances
+    (<tenant>.dimensions.ai) issue keys that only work against their own host.
+idempotency:
+  coverage: na
+  mechanism: null
+  header: null
+  scope: []
+  note: >-
+    There is no mutating surface. Both operations are safe to replay: /auth mints
+    a new token (subject to the contractual token allowance) and /dsl/v2 is a
+    read. No Idempotency-Key header exists or is needed. `na` rather than `none` —
+    the dimension does not apply to a read-only API.
+reversibility:
+  coverage: na
+  operations: []
+  note: >-
+    Read-only API. No operation creates, updates or deletes provider-side state,
+    so there is nothing to reverse and no reversal window to state. The only
+    side effect an agent can produce is consumption of the subscription's token
+    allowance, which the provider may revoke but the consumer cannot undo.
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+dry_run_mode:
+  supported: partial
+  mechanism: >-
+    Facet-only and count-only queries act as a rehearsal: `return publications[id]
+    limit 1` or a facet projection returns `_stats.total_count` without pulling
+    rows, and the docs recommend running `facet_query` before a large pull. There
+    is no explicit dry-run flag.
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+pagination:
+  style: offset
+  params:
+    limit: rows per page, default 100 (MCP) / 20 (DSL default), max 1000
+    skip: 0-based offset
+  response_fields:
+    - _stats.total_count
+  max_rows_per_call: 1000
+  max_paginated_records: 50000
+  facet_buckets: 1000
+  facet_pagination: false
+  cursor: false
+  note: >-
+    Deep pagination is capped at 50,000 records (50 pages x 1,000) per search.
+    Facets return up to 1,000 buckets with no pagination — narrow with filters
+    instead. The MCP server adds a `confirmLargeFetch` guardrail above skip 5000 /
+    page 5 and warns when total_count exceeds 10,000.
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+field_selection:
+  supported: true
+  mechanism: >-
+    The DSL `return <source>[field1+field2]` projection and named fieldsets
+    (`basics`, `extras`, `book`, ...) select which fields come back. Per-source
+    field lists are published on the Data Sources pages.
+  source: https://docs.dimensions.ai/dsl/data-sources.html
+filtering:
+  mechanism: DSL `where` clauses and `for "..."` full-text search
+  limits:
+    in_clause_items: 400
+    boolean_filter_conditions: 100
+    boolean_fulltext_clauses: 100
+  source: https://docs.dimensions.ai/dsl/usagepolicy.html
+sorting:
+  mechanism: DSL `sort by <field>`
+  note: >-
+    Publications default to relevance ordering since v2.9.1 (previously date).
+    Sorting by `title` is discouraged and the docs say it will be disallowed in
+    future.
+  source: https://docs.dimensions.ai/dsl/releasenotes.html
+content_negotiation:
+  request_content_type: >-
+    None required. UTF-8 and JSON are always assumed, except /dsl and /dsl.json
+    where the body is a raw DSL string, not JSON. The published OpenAPI models
+    /dsl/v2 as text/plain.
+  response_content_type: application/json (UTF-8)
+  source: https://docs.dimensions.ai/dsl/faq.html
+error_envelope:
+  format: vendor-json
+  rfc9457: false
+  http_codes:
+    '400': Semantic/Query Error — the DSL query is not valid
+    '401': Authentication failure or token expiration
+    '429': Rate limit exceeded (30 req/IP/min, edge-enforced)
+    '500': Evaluation/Data/Timeout Error — the query could not be evaluated
+  warnings: >-
+    Successful responses can carry deprecation and performance warnings alongside
+    results (deprecated field usage, "Using more than one UNNEST may lead to long
+    response times and timeouts").
+  cross_ref: errors/dimensions-problem-types.yml
+  source: https://docs.dimensions.ai/dsl/faq.html
+rate_limit_signaling:
+  headers: none
+  status: 429
+  note: >-
+    No Retry-After and no X-RateLimit-* headers are returned. Clients must
+    self-throttle; the official MCP server ships a 30/min sliding-window limiter
+    for exactly this reason.
+  cross_ref: rate-limits/dimensions-rate-limits.yml
+  source: https://github.com/digital-science/dimensions-analytics-mcp/blob/main/docs/REFERENCE.md
+request_tracing:
+  request_id_header: none published
+  note: >-
+    Support asks for "the exact error message, full body and headers" rather than
+    a correlation id, which implies no published request-id convention.
+  source: https://docs.dimensions.ai/dsl/faq.html
+versioning:
+  style: path
+  current: /api/dsl/v2 (DSL 2.15)
+  alias: /api/dsl and /api/dsl.json point at the current major
+  cadence: minor release roughly every two weeks
+  compatibility: >-
+    Backward compatibility is a stated policy: query syntax and data model are
+    never changed in a way that alters behaviour. Fields are deprecated, never
+    deleted, until the next MAJOR release, at which point deprecated fields are
+    removed from the new version and kept only in the legacy version.
+  cross_ref: lifecycle/dimensions-lifecycle.yml
+  source: https://docs.dimensions.ai/dsl/faq.html
+metadata:
+  custom_fields: false
+  note: The API returns Dimensions' own records; consumers cannot attach metadata.

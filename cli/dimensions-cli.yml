@@ -1,0 +1,49 @@
+generated: '2026-09-06'
+method: searched
+source: >-
+  https://docs.dimensions.ai/dsl/api.html + https://github.com/digital-science/dimcli
+  + https://pypi.org/project/dimcli/
+provider: Dimensions
+providerId: dimensions
+name: dimcli
+description: >-
+  dimcli is Digital Science's first-party Python client for the Dimensions
+  Analytics API, and it ships an interactive command-line console for the
+  Dimensions Search Language. Running `dimcli` in a terminal opens a REPL with
+  syntax autocompletion, persistent history across sessions, pretty-printed and
+  previewed JSON results, and export to HTML and CSV.
+official: true
+license: MIT
+repository: https://github.com/digital-science/dimcli
+docs: https://digital-science.github.io/dimcli/
+package: dimcli
+registry: pypi
+version: '1.8'
+published: '2026-07-10'
+install:
+- method: pip
+  command: pip install dimcli -U
+binary: dimcli
+type: interactive REPL console (not a subcommand CLI)
+capabilities:
+- Interactive DSL query console with grammar autocompletion
+- Persistent query history across sessions
+- Pretty-printing and preview of JSON results
+- Export of results to HTML and CSV
+- Python API (dimcli.login / dimcli.Dsl().query) for notebook and script use
+- pandas dataframe conversion of result sets
+- Jupyter magic commands for querying, dataframe conversion, and interactive linked tables
+auth:
+  method: API key
+  usage: dimcli.login(key="...", endpoint="https://app.dimensions.ai/api/dsl/v2")
+  note: >-
+    The explicit-key form above is the one shown on the Dimensions API Access page
+    and in the dimcli README. No credentials-file location is documented in the
+    README or the API docs, so none is asserted here.
+learning_resources:
+- name: Dimensions API Lab
+  url: https://api-lab.dimensions.ai/
+  repository: https://github.com/digital-science/dimensions-api-lab
+  description: >-
+    Open-source Jupyter notebooks demonstrating scholarly analytics tasks with
+    dimcli — citation networks, journal competitor analysis, affiliation tracking.
