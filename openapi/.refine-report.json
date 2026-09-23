@@ -1,8 +1,7 @@
 {
   "provider": "dimensions",
   "sources": [
-    "dimensions-authentication-api-openapi.yml",
-    "dimensions-query-api-openapi.yml"
+    "_original/dimensions-openapi.yml"
   ],
   "outputs": [
     "dimensions-authentication-api-openapi.yml",
@@ -12,9 +11,12 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "dimensions-authentication-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "dimensions-query-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "dimensions-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "dimensions-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dimensions-query-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
