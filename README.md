@@ -1,4 +1,4 @@
-# Dimensions (dimensions)
+# Dimensions
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,65 +66,146 @@
 
 Dimensions is a research data platform from Digital Science providing access to publications, grants, patents, clinical trials, datasets, and policy documents. The Dimensions Analytics API offers programmatic access to this research data via the Dimensions Search Language (DSL), enabling citation analysis, researcher discovery, organization benchmarking, and topic identification. The API is subscription-only and is not intended for bulk data extraction or to power dashboards or other derivative products.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/dimensions/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/dimensions/refs/heads/main/apis.yml)
+**Areas:** Analytics · Research · Publications · Grants · Patents · Clinical Trials · Jupyter Notebooks · Scientometrics · Bibliometrics · Research Intelligence · Datasets · Policy Documents
 
-## Scope
+## Dimensions on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Dimensions is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/dimensions/](https://apis.io/providers/dimensions/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (3)
 
-- Analytics
-- Research
-- Publications
-- Grants
-- Patents
-- Clinical Trials
-- Jupyter Notebooks
+- [Dimensions Analytics API](https://apis.io/apis/dimensions/dimensions-analytics-api/) — The Dimensions Analytics API provides programmatic access to the Dimensions research data platform via the Dimensions Search Language (DSL). It supports…
+- [Dimensions Authentication API](https://apis.io/apis/dimensions/dimensions-authentication-api/) — The Authentication API from Dimensions — 1 operation(s) for authentication.
+- [Dimensions Query API](https://apis.io/apis/dimensions/dimensions-query-api/) — The Query API from Dimensions — 1 operation(s) for query.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-02-06
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Dimensions Analytics API
+Model Context Protocol servers that expose the API to agents.
 
-The Dimensions Analytics API provides programmatic access to the Dimensions research data platform via the Dimensions Search Language (DSL). It supports queries against publications, grants, patents, clinical trials, datasets, organizations, and researchers. Authentication uses an API key exchanged for a JWT token via POST to /api/auth, with query requests sent to /api/dsl/v2 carrying the JWT in the Authorization header. The API is subscription-only and rate limited to 30 requests per IP per minute.
+- [dimensions-mcp.yml](https://apis.io/servers/dimensions/dimensions-mcp-yml/)
 
-- **Human URL:** [https://docs.dimensions.ai/dsl/](https://docs.dimensions.ai/dsl/)
-- **Base URL:** `https://app.dimensions.ai/api`
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Analytics
-- Research
-- Publications
-- Grants
-- Patents
-- Clinical Trials
+- [Dimensions Agentic Access](https://apis.io/agentic-access/dimensions/dimensions-agentic-access/)
 
-#### Properties
+#### Collections (3)
 
-- [Documentation](https://docs.dimensions.ai/dsl/)
-- [A P I  Access](https://docs.dimensions.ai/dsl/api.html)
-- [D S L  Reference](https://docs.dimensions.ai/dsl/language.html)
-- [A P I  Lab](https://api-lab.dimensions.ai/)
-- [Source Code](https://github.com/digital-science/dimcli)
-- [Postman Collection](collections/dimensions.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/dimensions.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Postman and Open Collection request collections.
 
-## Common Properties
+- [Dimensions Analytics API](https://apis.io/collections/dimensions/open-dimensions/)
+- [Dimensions Analytics Authentication API](https://apis.io/collections/dimensions/open-dimensions-authentication-api/)
+- [Dimensions Analytics Authentication Query API](https://apis.io/collections/dimensions/open-dimensions-query-api/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Dimensions Authentication Api Overlay](https://apis.io/overlays/dimensions/dimensions-authentication-api-overlay/)
+- [Dimensions Query Api Overlay](https://apis.io/overlays/dimensions/dimensions-query-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Dimensions Authentication](https://apis.io/security/dimensions/dimensions-authentication/)
+- [Dimensions Domain Security](https://apis.io/security/dimensions/dimensions-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Dimensions Scopes](https://apis.io/scopes/dimensions/dimensions-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Dimensions Plans Pricing](https://apis.io/plans/dimensions/dimensions-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Dimensions Rate Limits](https://apis.io/rate-limits/dimensions/dimensions-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Dimensions Finops](https://apis.io/finops/dimensions/dimensions-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.dimensions.ai/)
 - [Documentation](https://docs.dimensions.ai/dsl/)
-- [Support](https://plus.dimensions.ai/support/)
+- [Getting started](https://docs.dimensions.ai/dsl/getting-started.html)
+- [API reference](https://docs.dimensions.ai/dsl/api.html)
+- [Support](https://help.dimensions.ai/)
 - [Blog](https://www.dimensions.ai/blog/)
+- [Terms of service](https://www.dimensions.ai/website-terms/)
+- [Privacy policy](https://www.dimensions.ai/privacy/)
+- [GitHub](https://github.com/digital-science)
+- [Status](https://status.dimensions.ai/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 46.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 42.9 |
+| Contract governance | 18.2 |
+| Operational transparency | 63.2 |
+| Developer ergonomics | 63.7 |
+| Access clarity | 27.6 |
+
+**Agent readiness 37.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 32.8** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/dimensions/](https://apis.io/providers/dimensions/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Dimensions: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/dimensions/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
